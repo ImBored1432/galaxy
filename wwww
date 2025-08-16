@@ -1,5 +1,5 @@
--- Galaxy ESP V1 - Executor Compatible
--- Replace with your galaxy particle texture
+-- 🌌 Galaxy ESP V2 - Executor Ready
+-- Replace with your animated galaxy texture
 local galaxyTexture = "rbxassetid://1234567890" 
 
 local Players = game:GetService("Players")
@@ -11,25 +11,33 @@ local function addGalaxyEffect(character)
     -- Prevent duplicates
     if character:FindFirstChild("GalaxyESP_Highlight") then return end
 
-    -- Highlight
+    -- Highlight (glow only, no outline)
     local highlight = Instance.new("Highlight")
     highlight.Name = "GalaxyESP_Highlight"
-    highlight.FillColor = Color3.fromRGB(100, 0, 255) -- purple glow
-    highlight.OutlineColor = Color3.fromRGB(0, 255, 255) -- cyan outline
-    highlight.FillTransparency = 0.5
+    highlight.FillColor = Color3.fromRGB(120, 0, 255) -- deep purple glow
+    highlight.FillTransparency = 0.35
+    highlight.OutlineTransparency = 1 -- removes outline
     highlight.DepthMode = Enum.HighlightDepthMode.AlwaysOnTop
     highlight.Parent = character
 
-    -- Particle emitter
+    -- Galaxy swirl particles
     local particle = Instance.new("ParticleEmitter")
     particle.Name = "GalaxyESP_Particles"
     particle.Texture = galaxyTexture
-    particle.Rate = 15
-    particle.Lifetime = NumberRange.new(2, 4)
-    particle.Speed = NumberRange.new(0.5, 1)
+    particle.Rate = 20
+    particle.Lifetime = NumberRange.new(3, 6)
+    particle.Speed = NumberRange.new(0.3, 0.7)
     particle.Rotation = NumberRange.new(0, 360)
+    particle.RotSpeed = NumberRange.new(-30, 30) -- swirl animation
+    particle.SpreadAngle = Vector2.new(360, 360)
+    particle.Transparency = NumberSequence.new({
+        NumberSequenceKeypoint.new(0, 0),
+        NumberSequenceKeypoint.new(0.8, 0.3),
+        NumberSequenceKeypoint.new(1, 1)
+    })
     particle.Size = NumberSequence.new({
-        NumberSequenceKeypoint.new(0, 1),
+        NumberSequenceKeypoint.new(0, 2),
+        NumberSequenceKeypoint.new(0.5, 4),
         NumberSequenceKeypoint.new(1, 0)
     })
     particle.Parent = character.HumanoidRootPart
@@ -51,4 +59,4 @@ Players.PlayerAdded:Connect(function(player)
     end
 end)
 
-print("✅ Galaxy ESP Loaded")
+print("✅ Galaxy ESP V2 Loaded - Swirling Effect Enabled")
