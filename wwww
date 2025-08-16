@@ -1,4 +1,4 @@
--- 🌌 Galaxy ESP V2 - Executor Ready
+-- 🌌 Galaxy ESP V3 - No Outline, Executor Ready
 -- Replace with your animated galaxy texture
 local galaxyTexture = "rbxassetid://1234567890" 
 
@@ -11,12 +11,13 @@ local function addGalaxyEffect(character)
     -- Prevent duplicates
     if character:FindFirstChild("GalaxyESP_Highlight") then return end
 
-    -- Highlight (glow only, no outline)
+    -- Highlight (glow only, NO outline)
     local highlight = Instance.new("Highlight")
     highlight.Name = "GalaxyESP_Highlight"
     highlight.FillColor = Color3.fromRGB(120, 0, 255) -- deep purple glow
     highlight.FillTransparency = 0.35
-    highlight.OutlineTransparency = 1 -- removes outline
+    highlight.OutlineColor = highlight.FillColor -- blend outline away
+    highlight.OutlineTransparency = 1 -- fully invisible
     highlight.DepthMode = Enum.HighlightDepthMode.AlwaysOnTop
     highlight.Parent = character
 
@@ -24,11 +25,11 @@ local function addGalaxyEffect(character)
     local particle = Instance.new("ParticleEmitter")
     particle.Name = "GalaxyESP_Particles"
     particle.Texture = galaxyTexture
-    particle.Rate = 20
+    particle.Rate = 25
     particle.Lifetime = NumberRange.new(3, 6)
     particle.Speed = NumberRange.new(0.3, 0.7)
     particle.Rotation = NumberRange.new(0, 360)
-    particle.RotSpeed = NumberRange.new(-30, 30) -- swirl animation
+    particle.RotSpeed = NumberRange.new(-40, 40) -- swirl animation
     particle.SpreadAngle = Vector2.new(360, 360)
     particle.Transparency = NumberSequence.new({
         NumberSequenceKeypoint.new(0, 0),
@@ -59,4 +60,4 @@ Players.PlayerAdded:Connect(function(player)
     end
 end)
 
-print("✅ Galaxy ESP V2 Loaded - Swirling Effect Enabled")
+print("✅ Galaxy ESP V3 Loaded - No Outline")
