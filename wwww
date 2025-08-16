@@ -1,0 +1,54 @@
+-- Galaxy ESP V1 - Executor Compatible
+-- Replace with your galaxy particle texture
+local galaxyTexture = "rbxassetid://1234567890" 
+
+local Players = game:GetService("Players")
+
+-- Function to add galaxy ESP effect
+local function addGalaxyEffect(character)
+    if not character:FindFirstChild("HumanoidRootPart") then return end
+
+    -- Prevent duplicates
+    if character:FindFirstChild("GalaxyESP_Highlight") then return end
+
+    -- Highlight
+    local highlight = Instance.new("Highlight")
+    highlight.Name = "GalaxyESP_Highlight"
+    highlight.FillColor = Color3.fromRGB(100, 0, 255) -- purple glow
+    highlight.OutlineColor = Color3.fromRGB(0, 255, 255) -- cyan outline
+    highlight.FillTransparency = 0.5
+    highlight.DepthMode = Enum.HighlightDepthMode.AlwaysOnTop
+    highlight.Parent = character
+
+    -- Particle emitter
+    local particle = Instance.new("ParticleEmitter")
+    particle.Name = "GalaxyESP_Particles"
+    particle.Texture = galaxyTexture
+    particle.Rate = 15
+    particle.Lifetime = NumberRange.new(2, 4)
+    particle.Speed = NumberRange.new(0.5, 1)
+    particle.Rotation = NumberRange.new(0, 360)
+    particle.Size = NumberSequence.new({
+        NumberSequenceKeypoint.new(0, 1),
+        NumberSequenceKeypoint.new(1, 0)
+    })
+    particle.Parent = character.HumanoidRootPart
+end
+
+-- Hook onto all players
+for _, player in ipairs(Players:GetPlayers()) do
+    if player ~= Players.LocalPlayer then
+        if player.Character then
+            addGalaxyEffect(player.Character)
+        end
+        player.CharacterAdded:Connect(addGalaxyEffect)
+    end
+end
+
+Players.PlayerAdded:Connect(function(player)
+    if player ~= Players.LocalPlayer then
+        player.CharacterAdded:Connect(addGalaxyEffect)
+    end
+end)
+
+print("✅ Galaxy ESP Loaded")
